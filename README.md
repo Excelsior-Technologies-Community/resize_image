@@ -101,5 +101,8 @@ php artisan serve
 Visit:
 ```
 http://localhost:8000/image-upload
-<img width="1611" height="923" alt="image" src="https://github.com/user-attachments/assets/39db0d55-fed8-44f8-93bf-e4ee42bae9b1" />
+
+<img width="1763" height="854" alt="image" src="https://github.com/user-attachments/assets/5ba8d9dc-0284-4260-8bf0-0b22f094cadc" />
+
+
 
