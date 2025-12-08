@@ -1,66 +1,105 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel 11 – Resize Image Before Upload (Using Intervention Image)
+![Laravel](https://img.shields.io/badge/Laravel-11-orange)
+![PHP](https://img.shields.io/badge/PHP-8.2-blue)
+![Twilio](https://img.shields.io/badge/Twilio-OTP-red)
+![Email](https://img.shields.io/badge/SMTP-Mail-green)
+## 🚀 Features
+- Upload Original Image  
+- Auto-generate 100x100 Thumbnail  
+- Uses Intervention Image Package  
+- Laravel 11 Compatible  
+- Clean Code + Fully Commented  
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## 📦 Step 1: Install Laravel 11
+```bash
+composer create-project laravel/laravel example-app
+```
 
-## About Laravel
+## 🖼 Step 2: Install Intervention Image Package
+```bash
+composer require intervention/image-laravel
+```
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🛣 Step 3: Add Routes
+```php
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ImageController;
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Route::get('image-upload', [ImageController::class, 'index']);
+Route::post('image-upload', [ImageController::class, 'store'])->name('image.store');
+```
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🎮 Step 4: ImageController
+```php
+<?php
 
-## Learning Laravel
+namespace App\Http\Controllers;
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+use Illuminate\Http\Request;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Intervention\Image\Laravel\Facades\Image;
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+class ImageController extends Controller
+{
+    public function index(): View
+    {
+        return view('imageUpload');
+    }
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+    public function store(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
 
-## Laravel Sponsors
+        $image = $request->file('image');
+        $imageName = time().'.'.$image->extension();
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+        $destinationPathThumbnail = public_path('images/thumbnail');
+        $img = Image::read($image->path());
+        $img->resize(100, 100, function ($constraint) {
+            $constraint->aspectRatio();
+        })->save($destinationPathThumbnail.'/'.$imageName);
 
-### Premium Partners
+        $destinationPath = public_path('/images');
+        $image->move($destinationPath, $imageName);
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+        return back()->with('success', 'Image Uploaded successfully!')
+                     ->with('imageName', $imageName);
+    }
+}
+```
 
-## Contributing
+## 🖥 Step 5: View File
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Laravel 11 Resize Image Before Upload Example</title>
+</head>
+<body>
+<div class="container">
+    <h3>Laravel 11 Resize Image Before Upload Example</h3>
+</div>
+</body>
+</html>
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 📁 Folder Structure
+```
+public/
+ └── images/
+       └── thumbnail/
+```
 
-## Code of Conduct
+## ▶ Run App
+```bash
+php artisan serve
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Visit:
+```
+http://localhost:8000/image-upload
+<img width="1611" height="923" alt="image" src="https://github.com/user-attachments/assets/39db0d55-fed8-44f8-93bf-e4ee42bae9b1" />
 
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
