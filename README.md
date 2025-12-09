@@ -7,7 +7,7 @@ Based on your provided tutorial.
 
 ---
 
- Step 1: Install Laravel 11
+# Step 1: Install Laravel 11
 
 If you haven’t created a Laravel project yet, run:
 
@@ -17,7 +17,7 @@ composer create-project laravel/laravel example-app
 
 ---
 
- Step 2: Install Intervention Image Package
+# Step 2: Install Intervention Image Package
 
 Install the image processing library:
 
@@ -29,7 +29,7 @@ This package helps in resizing images and generating thumbnails.
 
 ---
 
- Step 3: Create Routes
+# Step 3: Create Routes
 
 Add these routes inside `routes/web.php`:
 
@@ -46,7 +46,7 @@ Route::get('/', function () {
 
 ---
 
- Step 4: Create Controller File
+# Step 4: Create Controller File
 
 Create ImageController:
 
@@ -114,7 +114,7 @@ Make sure folders exist:
 
 ---
 
- Step 5: Create View File (imageUpload.blade.php)
+# Step 5: Create View File (imageUpload.blade.php)
 
 Create: `resources/views/imageUpload.blade.php`
 
