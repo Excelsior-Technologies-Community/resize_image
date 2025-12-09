@@ -1,5 +1,5 @@
 
-# 📸 Laravel 11 – Resize Image Before Upload (Full Documentation)
+ Laravel 11 – Resize Image Before Upload (Full Documentation)
 ![Laravel](https://img.shields.io/badge/Laravel-11-orange)
 ![PHP](https://img.shields.io/badge/PHP-8.2-blue)
 ![Twilio](https://img.shields.io/badge/Twilio-OTP-red)
@@ -8,7 +8,7 @@ A complete step-by-step guide to **upload**, **resize**, and **generate thumbnai
 
 ---
 
-# 🌟 Overview
+ Overview
 This project demonstrates how to:
 
 - Upload an image  
@@ -25,7 +25,7 @@ Perfect for:
 
 ---
 
-# 🧱 Tech Stack
+Tech Stack
 
 | Technology | Purpose |
 |-----------|---------|
@@ -36,7 +36,7 @@ Perfect for:
 
 ---
 
-# 📂 Project Directory Structure
+ Project Directory Structure
 ```
 /app
   /Http
@@ -55,8 +55,7 @@ Perfect for:
 ```
 
 ---
-
-# 🚀 Step-by-Step Implementation Guide
+ Step-by-Step Implementation Guide
 
 ---
 
@@ -67,14 +66,14 @@ composer create-project laravel/laravel example-app
 
 ---
 
-## ✅ Step 2 — Install Intervention Image Package
+# Step 2 — Install Intervention Image Package
 ```
 composer require intervention/image-laravel
 ```
 
 ---
 
-## ✅ Step 3 — Add Routes
+# Step 3 — Add Routes
 
 **routes/web.php**
 ```php
@@ -86,7 +85,7 @@ Route::post('image-upload', [ImageController::class, 'store'])->name('image.stor
 
 ---
 
-## ✅ Step 4 — Create Controller (ImageController.php)
+# Step 4 — Create Controller (ImageController.php)
 
 Core resizing logic:
 
@@ -100,7 +99,7 @@ $img->resize(100, 100, function ($constraint) {
 $image->move(public_path('images'), $imageName);
 ```
 
-### 📌 How It Works:
+# How It Works:
 | Step | Explanation |
 |------|-------------|
 | Validate Image | Makes sure only valid images are uploaded |
@@ -111,7 +110,7 @@ $image->move(public_path('images'), $imageName);
 
 ---
 
-## ✅ Step 5 — Upload Form (Blade File)
+# Step 5 — Upload Form (Blade File)
 
 **resources/views/imageUpload.blade.php**
 
@@ -123,7 +122,7 @@ $image->move(public_path('images'), $imageName);
 </form>
 ```
 
-### 🖼 Show Uploaded Images:
+# Show Uploaded Images:
 ```php
 <img src="/images/{{ Session::get('imageName') }}" width="300px" />
 <img src="/images/thumbnail/{{ Session::get('imageName') }}" />
@@ -131,7 +130,7 @@ $image->move(public_path('images'), $imageName);
 
 ---
 
-# ▶️ Run Laravel Project
+# Run Laravel Project
 Start server:
 
 ```
