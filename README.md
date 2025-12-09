@@ -1,5 +1,5 @@
 
-# Laravel 11 – Resize Image Before Upload (Using Intervention Image)
+# PHP_Laravel11_Resize_Images_Before_Upload
 
 This guide explains how to upload an image and automatically generate a resized thumbnail before saving it.  
 It uses the **Intervention Image Library** for resizing.  
