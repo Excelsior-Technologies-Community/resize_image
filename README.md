@@ -1,106 +1,150 @@
-# Laravel 11 – Resize Image Before Upload (Using Intervention Image)
+
+# 📸 Laravel 11 – Resize Image Before Upload (Full Documentation)
 ![Laravel](https://img.shields.io/badge/Laravel-11-orange)
 ![PHP](https://img.shields.io/badge/PHP-8.2-blue)
 ![Twilio](https://img.shields.io/badge/Twilio-OTP-red)
 ![Email](https://img.shields.io/badge/SMTP-Mail-green)
-## 🚀 Features
-- Upload Original Image  
-- Auto-generate 100x100 Thumbnail  
-- Uses Intervention Image Package  
-- Laravel 11 Compatible  
-- Clean Code + Fully Commented  
+A complete step-by-step guide to **upload**, **resize**, and **generate thumbnails** using **Laravel 11** and **Intervention Image**.
 
-## 📦 Step 1: Install Laravel 11
-```bash
+---
+
+# 🌟 Overview
+This project demonstrates how to:
+
+- Upload an image  
+- Validate the image  
+- Resize it to **100×100 thumbnail**  
+- Save original + thumbnail separately  
+- Display both images after upload  
+
+Perfect for:
+- E-commerce sites  
+- User profile images  
+- Gallery systems  
+- Admin dashboards  
+
+---
+
+# 🧱 Tech Stack
+
+| Technology | Purpose |
+|-----------|---------|
+| **Laravel 11** | Backend Framework |
+| **Intervention Image** | Image Resizing |
+| **Bootstrap 5** | UI Styling |
+| **Blade Templates** | Frontend Views |
+
+---
+
+# 📂 Project Directory Structure
+```
+/app
+  /Http
+    /Controllers
+      ImageController.php
+
+/public
+  /images
+      /thumbnail
+
+/resources/views
+  imageUpload.blade.php
+
+/routes
+  web.php
+```
+
+---
+
+# 🚀 Step-by-Step Implementation Guide
+
+---
+
+## ✅ Step 1 — Install Laravel 11
+```
 composer create-project laravel/laravel example-app
 ```
 
-## 🖼 Step 2: Install Intervention Image Package
-```bash
+---
+
+## ✅ Step 2 — Install Intervention Image Package
+```
 composer require intervention/image-laravel
 ```
 
-## 🛣 Step 3: Add Routes
+---
+
+## ✅ Step 3 — Add Routes
+
+**routes/web.php**
 ```php
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ImageController;
 
 Route::get('image-upload', [ImageController::class, 'index']);
 Route::post('image-upload', [ImageController::class, 'store'])->name('image.store');
 ```
 
-## 🎮 Step 4: ImageController
+---
+
+## ✅ Step 4 — Create Controller (ImageController.php)
+
+Core resizing logic:
+
 ```php
-<?php
+$img = Image::read($image->path());
 
-namespace App\Http\Controllers;
+$img->resize(100, 100, function ($constraint) {
+    $constraint->aspectRatio();
+})->save(public_path('images/thumbnail/'.$imageName));
 
-use Illuminate\Http\Request;
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
-use Intervention\Image\Laravel\Facades\Image;
-
-class ImageController extends Controller
-{
-    public function index(): View
-    {
-        return view('imageUpload');
-    }
-
-    public function store(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
-
-        $image = $request->file('image');
-        $imageName = time().'.'.$image->extension();
-
-        $destinationPathThumbnail = public_path('images/thumbnail');
-        $img = Image::read($image->path());
-        $img->resize(100, 100, function ($constraint) {
-            $constraint->aspectRatio();
-        })->save($destinationPathThumbnail.'/'.$imageName);
-
-        $destinationPath = public_path('/images');
-        $image->move($destinationPath, $imageName);
-
-        return back()->with('success', 'Image Uploaded successfully!')
-                     ->with('imageName', $imageName);
-    }
-}
+$image->move(public_path('images'), $imageName);
 ```
 
-## 🖥 Step 5: View File
-```html
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Laravel 11 Resize Image Before Upload Example</title>
-</head>
-<body>
-<div class="container">
-    <h3>Laravel 11 Resize Image Before Upload Example</h3>
-</div>
-</body>
-</html>
+### 📌 How It Works:
+| Step | Explanation |
+|------|-------------|
+| Validate Image | Makes sure only valid images are uploaded |
+| Read Image | Using Intervention Image |
+| Resize | Converts to 100×100 thumbnail |
+| Save Thumbnail | Saved in `/public/images/thumbnail/` |
+| Save Original | Saved in `/public/images/` |
+
+---
+
+## ✅ Step 5 — Upload Form (Blade File)
+
+**resources/views/imageUpload.blade.php**
+
+```php
+<form action="{{ route('image.store') }}" method="POST" enctype="multipart/form-data">
+    @csrf
+    <input type="file" name="image" class="form-control">
+    <button class="btn btn-success mt-3">Upload</button>
+</form>
 ```
 
-## 📁 Folder Structure
-```
-public/
- └── images/
-       └── thumbnail/
+### 🖼 Show Uploaded Images:
+```php
+<img src="/images/{{ Session::get('imageName') }}" width="300px" />
+<img src="/images/thumbnail/{{ Session::get('imageName') }}" />
 ```
 
-## ▶ Run App
-```bash
+---
+
+# ▶️ Run Laravel Project
+Start server:
+
+```
 php artisan serve
 ```
 
-Visit:
+Open in browser:
+
 ```
 http://localhost:8000/image-upload
+```
+
+---
 
 <img width="1588" height="811" alt="image" src="https://github.com/user-attachments/assets/ca5ad637-72f2-4604-8ed3-5d9fe521ccda" />
 
