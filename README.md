@@ -102,8 +102,7 @@ Visit:
 ```
 http://localhost:8000/image-upload
 
-<img width="1763" height="854" alt="image" src="https://github.com/user-attachments/assets/5ba8d9dc-0284-4260-8bf0-0b22f094cadc" />
+<img width="1588" height="811" alt="image" src="https://github.com/user-attachments/assets/5c788777-b886-48f4-ad38-bd2554a0c3dc" />
 
-<img width="1662" height="439" alt="image" src="https://github.com/user-attachments/assets/84c640b5-a79a-4334-820c-aca031f93f65" />
 
 
