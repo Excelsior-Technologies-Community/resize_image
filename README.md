@@ -59,21 +59,21 @@ Tech Stack
 
 ---
 
-## ✅ Step 1 — Install Laravel 11
+Step 1 — Install Laravel 11
 ```
 composer create-project laravel/laravel example-app
 ```
 
 ---
 
-# Step 2 — Install Intervention Image Package
+ Step 2 — Install Intervention Image Package
 ```
 composer require intervention/image-laravel
 ```
 
 ---
 
-# Step 3 — Add Routes
+ Step 3 — Add Routes
 
 **routes/web.php**
 ```php
@@ -85,7 +85,7 @@ Route::post('image-upload', [ImageController::class, 'store'])->name('image.stor
 
 ---
 
-# Step 4 — Create Controller (ImageController.php)
+ Step 4 — Create Controller (ImageController.php)
 
 Core resizing logic:
 
@@ -99,7 +99,7 @@ $img->resize(100, 100, function ($constraint) {
 $image->move(public_path('images'), $imageName);
 ```
 
-# How It Works:
+ How It Works:
 | Step | Explanation |
 |------|-------------|
 | Validate Image | Makes sure only valid images are uploaded |
@@ -110,7 +110,7 @@ $image->move(public_path('images'), $imageName);
 
 ---
 
-# Step 5 — Upload Form (Blade File)
+ Step 5 — Upload Form (Blade File)
 
 **resources/views/imageUpload.blade.php**
 
@@ -122,7 +122,7 @@ $image->move(public_path('images'), $imageName);
 </form>
 ```
 
-# Show Uploaded Images:
+ Show Uploaded Images:
 ```php
 <img src="/images/{{ Session::get('imageName') }}" width="300px" />
 <img src="/images/thumbnail/{{ Session::get('imageName') }}" />
@@ -130,7 +130,7 @@ $image->move(public_path('images'), $imageName);
 
 ---
 
-# Run Laravel Project
+ Run Laravel Project
 Start server:
 
 ```
